@@ -1,0 +1,25 @@
+http://www.linuxfromscratch.org/lfs/view/development/chapter06/readline.html
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/readline.rb
+http://justatheory.com/computers/os/macosx/libreadline.html
+perl -i.bak -p -e \
+  "s/SHLIB_LIBS=.*/SHLIB_LIBS='-lSystem -lncurses -lcc_dynamic'/g" \
+  support/shobj-conf
+./configure
+make
+sudo make install
+
+
+cd /usr/local/Sources/
+curl --remote-name https://ftp.gnu.org/gnu/readline/readline-7.0.tar.gz
+wget -P /usr/local/Sources/ https://ftp.gnu.org/gnu/readline/readline-7.0.tar.gz
+tar zxvf /usr/local/Sources/readline-7.0.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/readline-7.0
+
+
+./configure --prefix=/usr/local/Custom/readline --disable-static --docdir=--prefix=/usr/local/Custom/readline/share/doc/readline-7.0
+
+make SHLIB_LIBS="-L/tools/lib -lncursesw"
+make
+sudo make install
+
+

@@ -1,0 +1,39 @@
+Ini Information based On
+	https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/#sources
+	http://nginx.org/en/download.html
+	http://www.catchexceptions.com/linux/compile-and-setup-nginx-from-scratch/
+	https://github.com/Homebrew/homebrew-core/blob/master/Formula/nginx.rb
+	https://github.com/denji/homebrew-nginx/blob/master/Formula/nginx-full.rb
+	https://github.com/openresty/openresty/issues/3
+		export KERNEL_BITS=64
+		darwin64-x86_64-cc
+End Information based On
+
+
+wget -P /usr/local/Sources/ http://nginx.org/download/nginx-1.13.9.tar.gz
+tar zxvf /usr/local/Sources/nginx-1.13.9.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/nginx-1.13.9
+
+CC=clang KERNEL_BITS=64 ./configure --prefix=/usr/local/Custom/nginx --sbin-path=/usr/local/Custom/nginx/bin/nginx --lock-path=/usr/local/Custom/nginx/run/nginx.lock \
+--with-http_ssl_module --with-mail_ssl_module --with-stream --with-mail=dynamic \
+--with-cc-opt="-I/usr/local/Custom/openssl/include -I/usr/local/Custom/pcre/include -I/usr/local/Custom/zlib/include" \
+--with-ld-opt="-L/usr/local/Custom/openssl/lib -L/usr/local/Custom/pcre/lib -L/usr/local/Custom/zlib/lib"
+make
+sudo make install
+
+echo 'export PATH=/usr/local/Custom/nginx/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+
+
+
+$ pkg-config libpcre libpcre16 libpcre32 libpcrecpp --libs --cflags --static
+-I/usr/local/Custom/pcre/include -L/usr/local/Custom/pcre/lib -lpcre -lpcre16 -lpcre32 -lpcre -lpcrecpp
+
+$ pkg-config libcrypto openssl  libssl --libs --cflags --static
+-I/usr/local/Custom/openssl/include -L/usr/local/Custom/openssl/lib -lssl -lcrypto
+
+
+
+
+

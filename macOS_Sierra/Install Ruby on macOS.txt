@@ -1,0 +1,17 @@
+http://mac-dev-env.patrickbougie.com/ruby/
+
+cd /usr/local/Sources/
+curl --remote-name http://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.0.tar.xz
+tar zxvf /usr/local/Sources/ruby-2.5.0.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/ruby-2.5.0
+
+CC="CLang" CPPFLAGS="-I/usr/local/Custom/gdbm/include" LIBS="-L/usr/local/Custom/gdbm/lib -lgdbm" ./configure --prefix=/usr/local/Custom/ruby
+make
+sudo make install
+
+echo 'export PATH=/usr/local/Custom/ruby/bin:$PATH' >> ~/.bash_profile
+echo 'export MANPATH=/usr/local/Custom/ruby/share/man:$MANPATH' >> ~/.bash_profile
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/ruby/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+
+
+$ source ~/.bash_profile

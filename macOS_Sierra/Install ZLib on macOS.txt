@@ -1,0 +1,12 @@
+
+
+wget -P /usr/local/Sources/ http://zlib.net/zlib-1.2.11.tar.xz
+tar zxvf /usr/local/Sources/zlib-1.2.11.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/zlib-1.2.11
+./configure --prefix=/usr/local/Custom/zlib
+make
+sudo make install
+
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/zlib/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+source ~/.bash_profile

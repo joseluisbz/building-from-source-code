@@ -1,0 +1,51 @@
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/redis.rb
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
+http://mac-dev-env.patrickbougie.com/redis/
+
+
+cd /usr/local/Sources/
+curl --remote-name http://download.redis.io/releases/redis-4.0.8.tar.gz
+
+tar zxvf redis-4.0.8.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/redis-4.0.8
+
+make
+sudo make PREFIX=/usr/local/Custom/redis install
+
+echo 'export PATH=/usr/local/Custom/redis/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+sudo mkdir -p /usr/local/Custom/redis/var
+
+
+$ mv /usr/local/Sources/redis-4.0.8/redis.conf /usr/local/Sources/redis-4.0.8/redis.old.conf
+$ cat > /usr/local/Sources/redis-4.0.8/redis.conf <<EOL
+# Data folder
+dir /usr/local/Custom/redis/var
+# Bind to localhost
+bind 127.0.0.1
+EOL
+$ sudo mv /usr/local/Sources/redis-4.0.8/*.conf /usr/local/Custom/redis/
+
+
+Launch the Server
+$ redis-server /usr/local/Custom/redis/redis.conf &
+
+Test Server when is launched
+$ redis-cli
+ping
+set foo hello
+get foo
+quit
+$
+
+
+$ pkill -f 'redis-server'
+$ ps aux | grep -ie 'redis-server' | awk 'NR==1{print $2}' | xargs kill -9 
+
+$ ps au | grep redis
+joseluisbz 46599   0.2  0.2  2447000   3232 s000  S     5:05PM   0:00.14 redis-server 127.0.0.1:6379 
+joseluisbz 46703   0.0  0.1  2433396   1068 s000  R+    5:06PM   0:00.00 grep redis
+$ kill -9 46599
+
+$ 

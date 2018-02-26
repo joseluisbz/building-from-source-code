@@ -1,0 +1,22 @@
+
+
+NODE
+
+cd /usr/local/Sources/
+curl --remote-name https://nodejs.org/dist/v9.5.0/node-v9.5.0-darwin-x64.tar.gz
+tar zxvf /usr/local/Sources/node-v9.5.0-darwin-x64.tar.gz -C /usr/local/Sources/
+sudo mv /usr/local/Sources/node-v9.5.0-darwin-x64 /usr/local/Custom/node
+echo 'export PATH=/usr/local/Custom/node/bin:$PATH' >> ~/.bash_profile
+$ source ~/.bash_profile
+
+GO
+https://golang.org/dl/
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/go.rb
+
+
+cd /usr/local/Sources/
+curl -o --remote-name https://dl.google.com/go/go1.10.darwin-amd64.tar.gz
+tar zxvf /usr/local/Sources/go1.10.darwin-amd64.tar.gz -C /usr/local/Sources/
+sudo mv /usr/local/Sources/go /usr/local/Custom/go
+echo 'export PATH=/usr/local/Custom/go/bin:$PATH' >> ~/.bash_profile
+$ source ~/.bash_profile

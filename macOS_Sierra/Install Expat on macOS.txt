@@ -1,0 +1,14 @@
+https://github.com/Homebrew/homebrew-core/blob/744f019af995f4a0f0eaa643a92ef234fca92af2/Formula/expat.rb
+
+
+wget -P /usr/local/Sources/ https://superb-dca2.dl.sourceforge.net/project/expat/expat/2.2.5/expat-2.2.5.tar.bz2
+tar zxvf /usr/local/Sources/expat-2.2.5.tar.bz2 -C /usr/local/Sources/
+cd /usr/local/Sources/expat-2.2.5
+./configure --prefix=/usr/local/Custom/expat
+make
+sudo make install
+
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/expat/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/expat/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile

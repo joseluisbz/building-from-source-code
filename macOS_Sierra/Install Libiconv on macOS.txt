@@ -1,0 +1,10 @@
+https://github.com/Homebrew/homebrew-core/blob/3405b293d63bff1e81040032391fbc1756cf1721/Formula/libiconv.rb
+
+
+wget -P /usr/local/Sources/ https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz
+tar zxvf /usr/local/Sources/libiconv-1.15.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/libiconv-1.15
+
+./configure --prefix=/usr/local/Custom/libiconv --disable-debug --disable-dependency-tracking --enable-extra-encodings --enable-static
+make -f Makefile.devel
+sudo make install

@@ -1,0 +1,21 @@
+http://www.linuxfromscratch.org/blfs/view/8.0/general/git.html
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/git.rb
+http://mac-dev-env.patrickbougie.com/git/
+
+
+tar zxvf /usr/local/Sources/git-2.16.2.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/git-2.16.2
+
+
+./configure --prefix=/usr/local/Custom/git --with-openssl --with-curl --with-expat --with-iconv --with-perl --with-python --with-zlib
+make
+sudo make install
+
+sudo tar zxvf /usr/local/Sources/git-manpages-2.16.2.tar.xz -C /usr/local/Custom/git/share/man
+sudo mkdir -p /usr/local/Custom/git/share/doc
+sudo tar zxvf /usr/local/Sources/git-htmldocs-2.16.2.tar.xz -C /usr/local/Custom/git/share/doc
+
+
+
+echo 'export PATH=/usr/local/Custom/git/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile

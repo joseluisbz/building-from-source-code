@@ -1,0 +1,3 @@
+https://docs.gitlab.com/ce/install/installation.html
+https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos
+https://www.howtoforge.com/tutorial/how-to-install-and-configure-gitlab-ce-on-centos-7/

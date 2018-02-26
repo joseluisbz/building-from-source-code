@@ -1,0 +1,18 @@
+http://www.linuxfromscratch.org/lfs/view/development/chapter06/gdbm.html
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/gdbm.rb
+http://justatheory.com/computers/os/macosx/my_adventures.html
+    ln -s /usr/local/lib/libgdbm.a /usr/local/lib/libdbm.a
+
+
+cd /usr/local/Sources/
+curl --remote-name https://ftp.gnu.org/gnu/gdbm/gdbm-1.14.1.tar.gz
+
+tar zxvf /usr/local/Sources/gdbm-1.14.1.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/gdbm-1.14.1
+
+./configure --prefix=/usr/local/Custom/gdbm --disable-static -disable-dependency-tracking --disable-silent-rules --without-readline --enable-libgdbm-compat
+make
+sudo make install
+
+echo 'export PATH=/usr/local/Custom/gdbm/bin:$PATH' >> ~/.bash_profile
+$ source ~/.bash_profile

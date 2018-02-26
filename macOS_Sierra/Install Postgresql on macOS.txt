@@ -1,0 +1,55 @@
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/postgresql.rb
+http://www.linuxfromscratch.org/blfs/view/svn/server/postgresql.html
+
+wget -P /usr/local/Sources/ https://ftp.postgresql.org/pub/source/v10.2/postgresql-10.2.tar.gz
+tar zxvf /usr/local/Sources/postgresql-10.2.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/postgresql-10.2
+
+
+CPPFLAGS=$(pkg-config openssl --cflags) LDFLAGS=$(pkg-config openssl --libs) \
+./configure --prefix=/usr/local/Custom/postgresql --libdir=/usr/local/Custom/postgresql/lib --docdir=/usr/local/Custom/postgresql/doc \
+ --enable-dtrace --enable-thread-safety --disable-debug --with-bonjour --with-gssapi --with-ldap --with-openssl --with-pam --with-libxml --with-libxslt --with-uuid=e2fs --with-perl --with-python --with-tcl
+
+make
+sudo make install
+sudo make install-world
+sudo make install-docs
+
+
+echo 'export PATH=/usr/local/Custom/postgresql/bin:$PATH' >> ~/.bash_profile
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/postgresql/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export MANPATH=/usr/local/Custom/postgresql/share/man:$MANPATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+sudo install -v -dm700 /usr/local/Custom/postgresql/data &&
+sudo install -v -dm755 /usr/local/Custom/postgresql/run &&
+sudo chown -Rv $(whoami):staff /usr/local/Custom/postgresql/data /usr/local/Custom/postgresql/run
+
+initdb -D /usr/local/Custom/postgresql/data
+			Success. You can now start the database server using:
+			START
+			    pg_ctl start -D /usr/local/Custom/postgresql/data -l  /usr/local/Custom/postgresql/data/logfile 
+			STATUS
+			    pg_ctl status -D /usr/local/Custom/postgresql/data
+			STOP
+				pg_ctl stop -m s -D /usr/local/Custom/postgresql/data
+
+FirstTime Connection
+http://suite.opengeo.org/docs/latest/dataadmin/pgGettingStarted/firstconnect.html
+Run the psql command from the postgres user account:
+	psql postgres 
+\password YOURPASSWORD
+	Enter a password.
+Close psql.
+	\q
+
+_______________________________________
+
+
+
+$ pkg-config openssl --libs
+-L/usr/local/Custom/openssl/lib -lssl -lcrypto
+
+$ pkg-config openssl  --cflags
+-I/usr/local/Custom/openssl/include
+
