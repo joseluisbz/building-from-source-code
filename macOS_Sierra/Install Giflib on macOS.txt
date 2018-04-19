@@ -1,0 +1,14 @@
+http://www.linuxfromscratch.org/blfs/view/svn/general/giflib.html
+
+
+wget -P /usr/local/Sources/ https://downloads.sourceforge.net/giflib/giflib-5.1.4.tar.bz2
+tar zxvf /usr/local/Sources/giflib-5.1.4.tar.bz2 -C /usr/local/Sources/
+cd /usr/local/Sources/giflib-5.1.4
+
+./configure --prefix=/usr/local/Custom/giflib --disable-static
+make
+sudo make install
+
+
+echo 'export PATH=/usr/local/Custom/giflib/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile

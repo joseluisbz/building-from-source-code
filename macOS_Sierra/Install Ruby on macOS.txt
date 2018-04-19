@@ -1,5 +1,12 @@
 http://mac-dev-env.patrickbougie.com/ruby/
 
+
+google-protobuf-3.5.1-universal-darwin requires ruby version < 2.5, which is incompatible with the current version, ruby 2.5.0p0
+wget -P /usr/local/Sources/ http://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.3.tar.xz
+tar zxvf /usr/local/Sources/ruby-2.4.3.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/ruby-2.4.3
+
+
 cd /usr/local/Sources/
 curl --remote-name http://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.0.tar.xz
 tar zxvf /usr/local/Sources/ruby-2.5.0.tar.xz -C /usr/local/Sources/

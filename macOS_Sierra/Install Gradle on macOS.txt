@@ -1,0 +1,10 @@
+
+
+wget -P /usr/local/Sources/ https://downloads.gradle.org/distributions/gradle-4.6-bin.zip
+tar zxvf /usr/local/Sources/gradle-4.6-bin.zip -C /usr/local/Sources/
+sudo mv /usr/local/Sources/gradle-4.6 /usr/local/Custom/gradle
+
+echo 'export PATH=/usr/local/Custom/gradle/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+

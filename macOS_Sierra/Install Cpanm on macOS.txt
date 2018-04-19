@@ -1,0 +1,9 @@
+
+wget -P /usr/local/Sources/ https://cpanmin.us/
+sudo mkdir /usr/local/Custom/pan-modules
+sudo mv /usr/local/Sources/index.html /usr/local/Custom/pan-modules/cpanm
+sudo chmod +x /usr/local/Custom/pan-modules/cpanm
+
+
+echo 'export PATH=/usr/local/Custom/pan-modules:$PATH' >> ~/.bash_profile
+source ~/.bash_profile

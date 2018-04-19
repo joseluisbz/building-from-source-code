@@ -1,0 +1,48 @@
+
+
+
+CMake Error at /usr/local/Custom/cmake/share/cmake-3.9/Modules/FindPackageHandleStandardArgs.cmake:137 (message):
+  Could NOT find GnuTLS (missing: GNUTLS_LIBRARY GNUTLS_INCLUDE_DIR)
+  (Required is at least version "3.3.24")
+Call Stack (most recent call first):
+  /usr/local/Custom/cmake/share/cmake-3.9/Modules/FindPackageHandleStandardArgs.cmake:377 (_FPHSA_FAILURE_MESSAGE)
+  /usr/local/Custom/cmake/share/cmake-3.9/Modules/FindGnuTLS.cmake:54 (FIND_PACKAGE_HANDLE_STANDARD_ARGS)
+  libmariadb/CMakeLists.txt:291 (FIND_PACKAGE)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/usr/local/Sources/mariadb-10.2.7/CMakeFiles/CMakeOutput.log".
+See also "/usr/local/Sources/mariadb-10.2.7/CMakeFiles/CMakeError.log".
+Joses-MacBook-Air:mariadb-10.2.7 joseluisbz$ export PKG_CONFIG_PATH=/usr/local/C
+
+
+
+
+cmake -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=c:\Custom\apr-util -DAPR_INCLUDE_DIR=c:\Custom\apr\include -DAPR_LIBRARIES=c:\Custom\apr\lib\libapr-1.lib -DOPENSSL_ROOT_DIR=c:\Custom\openssl -DCMAKE_BUILD_TYPE="RelWithDebInfo|x64" -DAPU_HAVE_CRYPTO=ON -DAPR_BUILD_TESTAPR=OFF -DINSTALL_PDB=OFF
+
+
+ -DGNUTLS_LIBRARY=/usr/local/Custom/gnutls/lib
+
+ -DGNUTLS_INCLUDE_DIR="/usr/local/Custom/gnutls/include" -DGNUTLS_LIBRARY="/usr/local/Custom/gnutls/lib/libgnutls.dylib:/usr/local/Custom/gnutls/lib/libgnutlsxx.dylib"
+
+
+ CMAKE "-DGNUTLS_LIBRARY=" "-DGNUTLS_INCLUDE_DIR=" example
+
+  -DGNUTLS_INCLUDE_DIR=/opt/gnutls/linux64/include/ -DGNUTLS_LIBRARY='/opt/gnutls/linux64/lib/libgnutls.a;/opt/gnutls/linux64/lib/libgcrypt.a;/opt/gnutls/linux64/lib/libtasn1.a;/opt/gnutls/linux64/lib/libgpg-error.a' 
+  -DJPEG_INCLUDE_DIR=/opt/libjpeg-turbo/include -DJPEG_LIBRARY=/opt/libjpeg-turbo/lib64/libjpeg.a 
+  -DUSE_INCLUDED_FLTK=1 -DCMAKE_INSTALL_PREFIX=/opt/TigerVNC -DBUILD_JAVA=1
+sudo make servertarball
+cp tigervnc-Linux-x86_64-*.tar.gz $OUTDIR/files/
+
+
+
+
+-DGNUTLS_INCLUDE_DIR=c:\gnutls\include
+-DGNUTLS_LIBRARY="c:\gnutls\lib\libgnutls.a;c:\gnutls\lib\libgcrypt.a;c:\gnutls\lib\libtasn1.a;c:\gnutls\lib\libgpg-error.a"
+c:\Development\nalps\tigervnc_trunk_export
+
+
+-DGNUTLS_INCLUDE_DIR:PATH=/usr/local/include
+-DGCRYPT_INCLUDE_DIR:PATH=/usr/local/include
+-DGNUTLS_LIBRARY:FILEPATH=/usr/local/lib/libgnutls.so
+

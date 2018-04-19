@@ -1,0 +1,46 @@
+
+http://www.programfaqs.com/faq/compiling-nbd-on-macos-configure-error-missing-glib/
+
+
+http://www.linuxfromscratch.org/blfs/view/svn/general/glib2.html
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/glib.rb
+
+
+wget -P /usr/local/Sources/ http://ftp.gnome.org/pub/gnome/sources/glib/2.56/glib-2.56.1.tar.xz
+tar zxvf /usr/local/Sources/glib-2.56.1.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/glib-2.56.1
+
+CFLAGS="-I/usr/local/Custom/gettext/include" LDFLAGS="-L/usr/local/Custom/gettext/lib"  \
+PCRE_CFLAGS="-I/usr/local/Custom/pcre/include" PCRE_LIBS="-L/usr/local/Custom/pcre/lib -lpcre" \
+LIBFFI_CFLAGS="-I/usr/local/Custom/libffi/lib/libffi-3.2.1/include" LIBFFI_LIBS="-L/usr/local/Custom/libffi/lib -lffi"  \
+./configure --prefix=/usr/local/Custom/glib 
+
+make
+sudo make install
+wget -P /usr/local/Sources/ https://cairographics.org/releases/pixman-0.34.0.tar.gz
+tar zxvf /usr/local/Sources/pixman-0.34.0.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/pixman-0.34.0
+./configure --prefix=/usr/local/Custom/glib  --with-pcre=system 
+
+
+--prefix=/usr/local/Custom/glib' 'CFLAGS=-I/usr/local/Custom/gettext/include' 'LDFLAGS=-L/usr/local/Custom/gettext/lib' 'PKG_CONFIG_PATH=/usr/local/Custom/libffi/lib/pkgconfig:/usr/local/Custom/openssl/lib/pkgconfig/:/usr/local/Custom/xz/lib/pkgconfig:/usr/local/Custom/openssl/lib/pkgconfig/:/usr/local/Custom/xz/lib/pkgconfig:' 'LIBFFI_CFLAGS=-I/usr/local/Custom/libffi/lib/libffi-3.2.1/include' 'LIBFFI_LIBS=-L/usr/local/Custom/libffi/lib -lffi' 'PCRE_CFLAGS=-I/usr/local/Custom/pcre/include' 'PCRE_LIBS=-L/usr/local/Custom/pcre/lib -lpcre'
+
+make
+sudo make install
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/glib/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/glib/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+$ pkg-config --list-all
+gobject-2.0           GObject - GLib Type, Object, Parameter and Signal Library
+gio-2.0               GIO - glib I/O library
+gmodule-export-2.0    GModule - Dynamic module loader for GLib
+gio-unix-2.0          GIO unix specific APIs - unix specific headers for glib I/O library
+glib-2.0              GLib - C Utility Library
+gmodule-2.0           GModule - Dynamic module loader for GLib
+gthread-2.0           GThread - Thread support for GLib
+gmodule-no-export-2.0 GModule - Dynamic module loader for GLib
+
+
+ -DHAVE_CONFIG_H

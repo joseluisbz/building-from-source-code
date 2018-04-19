@@ -1,6 +1,7 @@
 https://github.com/Homebrew/homebrew-core/blob/master/Formula/redis.rb
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
 http://mac-dev-env.patrickbougie.com/redis/
+https://jeremy.wordpress.com/2012/07/05/multiple-redis-instances-on-mac-os-x-with-homebrew/
 
 
 cd /usr/local/Sources/
@@ -16,10 +17,20 @@ echo 'export PATH=/usr/local/Custom/redis/bin:$PATH' >> ~/.bash_profile
 source ~/.bash_profile
 
 sudo mkdir -p /usr/local/Custom/redis/var
+sudo mkdir -p /usr/local/Custom/redis/tmp
 
+sudo chown -Rv $(whoami):staff /usr/local/Custom/redis/tmp
+sudo chown -Rv $(whoami):staff /usr/local/Custom/redis/var
+chmod 755 /usr/local/Custom/redis/tmp
 
 $ mv /usr/local/Sources/redis-4.0.8/redis.conf /usr/local/Sources/redis-4.0.8/redis.old.conf
 $ cat > /usr/local/Sources/redis-4.0.8/redis.conf <<EOL
+pidfile /usr/local/Custom/redis/var/run/redis.pid
+port 0
+unixsocket /usr/local/Custom/redis/tmp/redis.sock
+unixsocketperm 770
+dbfilename dump.rdb
+#vm-swap-file /usr/local/Custom/redis/tmp/redis.swap
 # Data folder
 dir /usr/local/Custom/redis/var
 # Bind to localhost
@@ -27,6 +38,8 @@ bind 127.0.0.1
 EOL
 $ sudo mv /usr/local/Sources/redis-4.0.8/*.conf /usr/local/Custom/redis/
 
+
+"Opening Unix socket: bind: No such file or directory"
 
 Launch the Server
 $ redis-server /usr/local/Custom/redis/redis.conf &

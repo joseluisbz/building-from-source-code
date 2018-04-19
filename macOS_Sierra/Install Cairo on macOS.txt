@@ -1,0 +1,37 @@
+http://www.linuxfromscratch.org/blfs/view/svn/x/cairo.html
+./configure --prefix=/usr    \
+            --disable-static \
+            --enable-tee &&
+make
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/cairo.rb
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/fontconfig.rb
+http://www.linuxfromscratch.org/blfs/view/svn/general/fontconfig.html
+
+
+https://github.com/Linuxbrew/homebrew-xorg/blob/master/Formula/libx11.rb
+https://github.com/Linuxbrew/homebrew-xorg/blob/master/Formula/libxcb.rb
+
+
+wget -P /usr/local/Sources/ https://cairographics.org/releases/cairo-1.14.12.tar.xz
+tar zxvf /usr/local/Sources/cairo-1.14.12.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/cairo-1.14.12
+
+
+./configure --prefix=/usr/local/Custom/cairo --disable-dependency-tracking --disable-static --enable-gobject=yes --enable-svg=yes --enable-tee=yes --enable-quartz-image \
+      --enable-xcb=no --enable-xlib=no --enable-xlib-xrender=no --enable-freetype=yes
+
+
+make
+sudo make install
+
+echo 'export PATH=/usr/local/Custom/cairo/bin:$PATH' >> ~/.bash_profile
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/cairo/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+
+$ pkg-config --list-all
+
+pkg-config libpng16 libtiff-4 --cflags
+

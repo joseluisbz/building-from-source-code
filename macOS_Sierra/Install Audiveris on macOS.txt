@@ -1,0 +1,6 @@
+
+https://github.com/Audiveris/audiveris/issues/3
+
+echo 'export TESSDATA_PREFIX=/usr/local/Custom/tesseract/share/tessdata' >> ~/.bash_profile
+source ~/.bash_profile
+

@@ -1,0 +1,14 @@
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/intltool.rb
+https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
+
+
+wget -P /usr/local/Sources/ https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
+tar zxvf /usr/local/Sources/intltool-0.51.0.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/intltool-0.51.0
+./configure --prefix=/usr/local/Custom/intltool --disable-silent-rules
+make
+sudo make install
+
+echo 'export PATH=/usr/local/Custom/intltool/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile

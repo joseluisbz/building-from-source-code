@@ -1,0 +1,17 @@
+
+
+sudo bundle config build.charlock_holmes --with-icu-dir=/usr/local/Custom/icu --with-opt-include=/usr/local/include/
+
+
+wget -P /usr/local/Sources/ https://github.com/google/re2/archive/master.zip
+tar zxvf /usr/local/Sources/master.zip -C /usr/local/Sources/
+
+in Makefile change prefix=/usr/local/Custom/re2
+make
+sudo make install
+
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/re2/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+

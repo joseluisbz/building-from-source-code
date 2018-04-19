@@ -1,0 +1,15 @@
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/libtool.rb
+
+
+wget -P /usr/local/Sources/ http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz
+tar zxvf /usr/local/Sources/libtool-2.4.6.tar.gz -C /usr/local/Sources/
+
+cd /usr/local/Sources/libtool-2.4.6
+
+./configure --prefix=/usr/local/Custom/libtool --disable-dependency-tracking --program-prefix=g --enable-ltdl-install
+make
+sudo make install
+
+
+echo 'export PATH=/usr/local/Custom/libtool/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
