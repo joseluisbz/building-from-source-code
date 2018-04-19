@@ -28,7 +28,7 @@ sudo chown -Rv $(whoami):staff /usr/local/Custom/postgresql/data /usr/local/Cust
 initdb -D /usr/local/Custom/postgresql/data
 			Success. You can now start the database server using:
 			START
-			    pg_ctl start -D /usr/local/Custom/postgresql/data -l  /usr/local/Custom/postgresql/data/logfile 
+			    pg_ctl start -D /usr/local/Custom/postgresql/data -l /usr/local/Custom/postgresql/data/logfile 
 			STATUS
 			    pg_ctl status -D /usr/local/Custom/postgresql/data
 			STOP
@@ -53,3 +53,37 @@ $ pkg-config openssl --libs
 $ pkg-config openssl  --cflags
 -I/usr/local/Custom/openssl/include
 
+
+
+$ pkg-config --list-all
+libecpg_compat        libecpg_compat - PostgreSQL libecpg_compat library
+gthread-2.0           GThread - Thread support for GLib
+icu-io                icu-io - International Components for Unicode: Stream and I/O Library
+gmodule-2.0           GModule - Dynamic module loader for GLib
+libpcrecpp            libpcrecpp - PCRECPP - C++ wrapper for PCRE
+liblzma               liblzma - General purpose data compression library
+gmodule-export-2.0    GModule - Dynamic module loader for GLib
+libssl                OpenSSL-libssl - Secure Sockets Layer and cryptography libraries
+ruby-2.4              Ruby - Object Oriented Script Language
+openssl               OpenSSL - Secure Sockets Layer and cryptography libraries and tools
+icu-i18n              icu-i18n - International Components for Unicode: Internationalization library
+libffi                libffi - Library supporting Foreign Function Interfaces
+libpcreposix          libpcreposix - PCREPosix - Posix compatible interface to libpcre
+icu-uc                icu-uc - International Components for Unicode: Common and Data libraries
+re2                   re2 - RE2 is a fast, safe, thread-friendly regular expression engine.
+zlib                  zlib - zlib compression library
+gio-2.0               GIO - glib I/O library
+libpq                 libpq - PostgreSQL libpq library
+gmodule-no-export-2.0 GModule - Dynamic module loader for GLib
+libpgtypes            libpgtypes - PostgreSQL libpgtypes library
+libecpg               libecpg - PostgreSQL libecpg library
+gobject-2.0           GObject - GLib Type, Object, Parameter and Signal Library
+libpcre16             libpcre16 - PCRE - Perl compatible regular expressions C library with 16 bit character support
+libcurl               libcurl - Library to transfer files with ftp, http, etc.
+expat                 expat - expat XML parser
+libpcre32             libpcre32 - PCRE - Perl compatible regular expressions C library with 32 bit character support
+libcrypto             OpenSSL-libcrypto - OpenSSL cryptography library
+libpcre               libpcre - PCRE - Perl compatible regular expressions C library with 8 bit character support
+gio-unix-2.0          GIO unix specific APIs - unix specific headers for glib I/O library
+glib-2.0              GLib - C Utility Library
+$ 

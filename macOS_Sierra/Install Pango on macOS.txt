@@ -1,0 +1,78 @@
+http://www.linuxfromscratch.org/blfs/view/svn/x/pango.html
+	mkdir build &&
+	cd    build &&
+
+	meson --prefix=/usr --sysconfdir=/etc .. &&
+	ninja
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/pango.rb
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}",
+                          "--with-html-dir=#{share}/doc",
+                          "--enable-introspection=yes",
+                          "--enable-man",
+                          "--enable-static",
+                          "--without-xft"
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}",
+                          "--with-html-dir=#{share}/doc",
+                          "--enable-introspection=yes",
+                          "--enable-man",
+                          "--enable-static",
+                          "--without-xft"
+
+
+wget -P /usr/local/Sources/ https://download.gnome.org/sources/pango/1.42/pango-1.42.1.tar.xz
+tar zxvf /usr/local/Sources/pango-1.42.1.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/pango-1.42.1
+
+
+https://github.com/Homebrew/legacy-homebrew/issues/14123
+https://github.com/Automattic/node-canvas/issues/528
+
+Install this!
+wget -P /usr/local/Sources/ https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.11.dmg
+
+export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig:$PKG_CONFIG_PATH
+
+CPPFLAGS="-I/usr/local/Custom/fontconfig/include/fontconfig -I/usr/local/Custom/gettext/include" \
+FONTCONFIG_CFLAGS="$(pkg-config fontconfig --cflags)" FONTCONFIG_LIBS="$(pkg-config fontconfig --libs)" \
+./configure --prefix=/usr/local/Custom/pango --disable-dependency-tracking --disable-silent-rules \
+ --enable-introspection=yes --enable-static --without-xft
+
+make
+sudo make install
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/pango/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/pango/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+
+$ pkg-config --list-all
+
+pkg-config libpng16 libtiff-4 --cflags
+
+
+DYLD_LIBRARY_PATH=/opt/X11/lib/flat_namespace
+
+In file included from ../pango/pango-ot.h:27:
+../pango/pangofc-font.h:35:10: fatal error: 'fontconfig/fontconfig.h' file not found
+#include <fontconfig/fontconfig.h>
+         ^
+1 error generated.
+make[2]: *** [test-ot-tags.o] Error 1
+make[1]: *** [all-recursive] Error 1
+make: *** [all] Error 2
+$ 
+
+https://github.com/Automattic/node-canvas/issues/528
+After that make sure that it gets added to your PKG_CONFIG_PATH:
+
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+
+
+
+

@@ -1,0 +1,38 @@
+
+
+http://www.linuxfromscratch.org/blfs/view/svn/general/harfbuzz.html
+
+./configure --prefix=/usr --with-gobject &&
+make
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/harfbuzz.rb
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-coretext=yes
+      --enable-static
+      --with-cairo=yes
+      --with-glib=yes
+      --with-gobject=yes
+      --enable-introspection=yes
+
+
+wget -P /usr/local/Sources/ https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.7.6.tar.bz2
+tar zxvf /usr/local/Sources/harfbuzz-1.7.6.tar.bz2 -C /usr/local/Sources/
+cd /usr/local/Sources/harfbuzz-1.7.6
+
+
+./configure --prefix=/usr/local/Custom/harfbuzz --disable-dependency-tracking --with-coretext=yes \
+  --with-cairo=yes --with-glib=yes --with-gobject=yes --enable-static
+
+make
+sudo make install
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/harfbuzz/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/harfbuzz/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+
+$ pkg-config --list-all
+
+pkg-config fribidi --cflags
+

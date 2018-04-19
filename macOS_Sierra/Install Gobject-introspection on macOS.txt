@@ -1,0 +1,87 @@
+
+https://github.com/Homebrew/legacy-homebrew/issues/18703
+
+http://www.linuxfromscratch.org/blfs/view/svn/general/gobject-introspection.html
+
+	./configure --prefix=/usr    \
+	            --disable-static \
+	            --with-python=/usr/bin/python3 &&
+	make
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/gobject-introspection.rb
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-python=#{Formula["python@2"].opt_bin}/python2"
+
+    ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
+
+    which python
+
+wget -P /usr/local/Sources/ https://download.gnome.org/sources/gobject-introspection/1.56/gobject-introspection-1.56.0.tar.xz
+tar zxvf /usr/local/Sources/gobject-introspection-1.56.0.tar.xz -C /usr/local/Sources/
+cd /usr/local/Sources/gobject-introspection-1.56.0
+
+
+https://mail.gnome.org/archives/gtk-perl-list/2016-October/msg00002.html
+curl -L https://cpanmin.us | perl - --sudo App::cpanminus
+
+export GI_SCANNER_DISABLE_CACHE="true"
+export ARCHFLAGS="-arch x86_64"
+
+export PKG_CONFIG_PATH="/usr/local/Custom/cairo/lib/pkgconfig:/usr/local/Custom/glib/lib/pkgconfig:/usr/local/Custom/pcre/lib/pkgconfig:/usr/local/Custom/libffi/lib/pkgconfig:/usr/local/Custom/freetype/lib/pkgconfig:/usr/local/Custom/pixman/lib/pkgconfig:/usr/local/Custom/libpng/lib/pkgconfig:/usr/local/Custom/zlib/lib/pkgconfig"
+
+export CAIRO_CFLAGS="$(pkg-config cairo cairo-ft cairo-gobject cairo-pdf cairo-png cairo-ps cairo-quartz cairo-quartz-font cairo-quartz-image cairo-script cairo-svg cairo-tee  --cflags)"
+
+export CAIRO_LIBS="$(pkg-config cairo cairo-ft cairo-gobject cairo-pdf cairo-png cairo-ps cairo-quartz cairo-quartz-font cairo-quartz-image cairo-script cairo-svg cairo-tee --libs)"
+
+export CPPFLAGS="-I/usr/local/Custom/gettext/include"
+
+./configure --prefix=/usr/local/Custom/gobject-introspection --disable-dependency-tracking --disable-static --with-python=$(which python)
+
+
+make  (First Time)
+
+
+make[2]: *** No rule to make target `/glib-2.0/include/glibconfig.h', needed by `GLib-2.0.gir'.  Stop.
+Replace in /usr/local/Sources/gobject-introspection-1.56.0/Makefile
+	GLIB_LIBDIR = $(shell "${PKG_CONFIG}" --variable=libdir glib-2.0)
+with 
+	GLIB_LIBDIR = /usr/local/Custom/glib/lib
+
+make[2]: *** No rule to make target `/glib-2.0/gobject/glib-types.h', needed by `GLib-2.0.gir'.  Stop.
+Replace in /usr/local/Sources/gobject-introspection-1.56.0/Makefile
+	GLIB_INCLUDEDIR = $(shell "${PKG_CONFIG}" --variable=includedir glib-2.0)/glib-2.0
+with 
+	GLIB_INCLUDEDIR = /usr/local/Custom/glib/include/glib-2.0
+
+make[2]: *** No rule to make target `/gio-unix-2.0/gio/*.h', needed by `Gio-2.0.gir'.  Stop.
+Replace in /usr/local/Sources/gobject-introspection-1.56.0/Makefile
+	GIO_UNIX_INCLUDEDIR = $(shell "${PKG_CONFIG}" --variable=includedir gio-unix-2.0)/gio-unix-2.0
+with 
+	GIO_UNIX_INCLUDEDIR = /usr/local/Custom/glib/include/gio-unix-2.0
+
+make[2]: *** No rule to make target `/glib-2.0/gio/*.h', needed by `Gio-2.0.gir'.  Stop.
+Replace in /usr/local/Sources/gobject-introspection-1.56.0/Makefile
+	GIO_INCLUDEDIR = $(shell "${PKG_CONFIG}" --variable=includedir gio-2.0)/glib-2.0
+with 
+	GIO_INCLUDEDIR=/usr/local/Custom/glib/include/glib-2.0
+
+make  (Second Time)
+
+sudo make install
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/gobject-introspection/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/gobject-introspection/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+$ pkg-config --list-all | grep Intr
+gobject-introspection-no-export-1.0 gobject-introspection - GObject Introspection
+gobject-introspection-1.0           gobject-introspection - GObject Introspection
+Joses-MacBook-Air:gobject-introspection-1.56.0 joseluisbz$
+
+**************************************************
+
+
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local/Custom/gobject-introspection
+

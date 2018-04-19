@@ -1,0 +1,32 @@
+http://www.linuxfromscratch.org/blfs/view/svn/general/freetype2.html
+
+
+  ./configure --prefix=/usr --disable-static &&
+  make
+  make install
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/freetype.rb
+
+
+wget -P /usr/local/Sources/ https://download.savannah.gnu.org/releases/freetype/freetype-2.9.tar.gz
+tar zxvf /usr/local/Sources/freetype-2.9.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/freetype-2.9
+
+LIBPNG_CFLAGS="$(pkg-config libpng libpng16 --cflags)" LIBPNG_LIBS="$(pkg-config libpng libpng16 --libs)" \
+./configure --prefix=/usr/local/Custom/freetype --disable-static
+
+make
+sudo make install
+
+echo 'export PKG_CONFIG_PATH=/usr/local/freetype/cairo/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/freetype/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+
+$ pkg-config --list-all | grep libpng
+libpng                              libpng - Loads and saves PNG files
+libpng16                            libpng - Loads and saves PNG files
+Joses-MacBook-Air:freetype-2.9 joseluisbz$ 
+
+
+pkg-config libpng16 libtiff-4 --cflags

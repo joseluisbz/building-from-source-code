@@ -1,0 +1,21 @@
+http://www.linuxfromscratch.org/blfs/view/svn/general/libwebp.html
+
+
+
+wget -P /usr/local/Sources/ http://downloads.webmproject.org/releases/webp/libwebp-0.6.1.tar.gz
+tar zxvf /usr/local/Sources/libwebp-0.6.1.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/libwebp-0.6.1
+
+CPPFLAGS="-I/usr/local/Custom/libjpeg/include -I/usr/local/Custom/zlib/include -I/usr/local/Custom/libpng/include/libpng16 -I/usr/local/Custom/tiff/include -I/usr/local/Custom/giflib/include" \
+LDFLAGS=" -L/usr/local/Custom/libjpeg/lib -ljpeg -L/usr/local/Custom/zlib/lib -lz -L/usr/local/Custom/libpng/lib -lpng16 -L/usr/local/Custom/tiff/lib -ltiff -L/usr/local/Custom/giflib/lib -lgif" \
+./configure --prefix=/usr/local/Custom/libwebp  --enable-libwebpmux  --enable-libwebpdemux \
+--enable-libwebpdecoder --enable-libwebpextras --enable-swap-16bit-csp  --disable-static
+
+
+make
+sudo make install
+
+echo 'export PATH=/usr/local/Custom/libwebp/bin:$PATH' >> ~/.bash_profile
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/libwebp/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+source ~/.bash_profile
+

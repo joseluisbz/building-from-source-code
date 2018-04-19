@@ -1,0 +1,9 @@
+sudo mkdir /Volumes/HD710A
+sudo chown joseluisbz:staff /Volumes/HD710A
+mount -t afp afp://joseluisbz:yosefdani@MacBook-Air.local/HD710A /Volumes/HD710A
+
+sfltool add-item com.apple.LSSharedFileList.FavoriteItems file://Volumes/HD710A
+
+open afp://joseluisbz:yosefdani@MacBook-Air.local/HD710A
+open afp://joseluisbz:yosefdani@MacBook-Air.local/'Macintosh HD'
+

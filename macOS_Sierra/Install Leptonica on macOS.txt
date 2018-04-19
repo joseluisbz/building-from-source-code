@@ -1,0 +1,44 @@
+https://medium.com/@lucas63/installing-tesseract-3-04-in-ubuntu-14-04-1dae8b748a32
+
+tar xvf leptonica-1.74.tar.gz
+cd leptonica-1.74
+./configure
+make
+sudo make install
+
+
+
+wget -P /usr/local/Sources/ http://www.leptonica.com/source/leptonica-1.74.tar.gz
+http://www.leptonica.com/source/leptonica-1.74.4.tar.gz	
+tar zxvf /usr/local/Sources/leptonica-1.74.4.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/leptonica-1.74.4
+
+wget -P /usr/local/Sources/ http://www.leptonica.com/source/leptonica-1.75.3.tar.gz
+tar zxvf /usr/local/Sources/leptonica-1.75.3.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/leptonica-1.75.3
+
+
+JPEG_CFLAGS="-I/usr/local/Custom/libjpeg/include" JPEG_LIBS="-L/usr/local/Custom/libjpeg/lib -ljpeg" \
+CPPFLAGS="-I/usr/local/Custom/giflib/include $(pkg-config libpng16 libtiff-4 libwebp libwebpdecoder libwebpdemux libwebpmux --cflags)" \
+LDFLAGS="-L/usr/local/Custom/giflib/lib -lgif $(pkg-config libpng16 libtiff-4 libwebp libwebpdecoder libwebpdemux libwebpmux --libs)" \
+./configure --prefix=/usr/local/Custom/leptonica
+make
+sudo make install
+
+
+echo 'export PATH=/usr/local/Custom/leptonica/bin:$PATH' >> ~/.bash_profile
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/leptonica/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+pkg-config libpng16 libtiff-4 --cflags
+
+
+
+$ pkg-config libpng16 libtiff-4 --cflags
+-I/usr/local/Custom/zlib/include -I/usr/local/Custom/tiff/include -I/usr/local/Custom/libpng/include/libpng16
+$ pkg-config libpng16 libtiff-4 --libs
+-L/usr/local/Custom/zlib/lib -L/usr/local/Custom/tiff/lib -L/usr/local/Custom/libpng/lib -lpng16 -lz -ltiff
+
+
+libwebp libwebpdecoder libwebpdemux libwebpmux 
+

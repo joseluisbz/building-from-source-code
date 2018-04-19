@@ -1,0 +1,22 @@
+
+checking for PACKAGE... no
+configure: error: Package requirements (libzip poppler-glib gtk+-3.0 gthread-2.0) were not met:
+
+No package 'libzip' found
+No package 'poppler-glib' found
+No package 'gtk+-3.0' found
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables PACKAGE_CFLAGS
+and PACKAGE_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+Joses-MacBook-Air:searchmonkey-GTK-v0.8.3 joseluisbz$ ls -al /usr/local/Custom/
+
+
+configure: error: Package requirements (libzip poppler-glib gtk+-3.0 gthread-2.0) were not met:
+
+No package 'libzip' found
+No package 'poppler-glib' found
+No package 'gtk+-3.0' found

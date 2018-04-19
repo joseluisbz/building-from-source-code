@@ -1,0 +1,46 @@
+http://www.linuxfromscratch.org/blfs/view/svn/general/fontconfig.html
+  rm -f src/fcobjshash.h
+  ./configure --prefix=/usr        \
+              --sysconfdir=/etc    \
+              --localstatedir=/var \
+              --disable-docs       \
+              --docdir=/usr/share/doc/fontconfig-2.13.0 &&
+  make
+  sudo make install
+
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/fontconfig.rb
+  autoreconf -iv
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--enable-static",
+                          "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts,/System/Library/Assets/com_apple_MobileAsset_Font3
+                          "--prefix=#{prefix}",
+                          "--localstatedir=#{var}",
+                          "--sysconfdir=#{etc}"
+
+
+wget -P /usr/local/Sources/ https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.0.tar.gz
+tar zxvf /usr/local/Sources/fontconfig-2.13.0.tar.gz -C /usr/local/Sources/
+cd /usr/local/Sources/fontconfig-2.13.0
+
+
+UUID_CFLAGS="$(pkg-config uuid --cflags)" UUID_LIBS="$(pkg-config uuid --libs)" \
+FREETYPE_CFLAGS="$(pkg-config freetype2 --cflags)" FREETYPE_LIBS="$(pkg-config freetype2 --libs)" \
+CPPFLAGS="-I/usr/local/Custom/gettext/include" \
+./configure --prefix=/usr/local/Custom/fontconfig --disable-dependency-tracking --disable-docs --disable-silent-rules --enable-static \
+ --with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts,/System/Library/Assets/com_apple_MobileAsset_Font3
+
+make
+sudo make install
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/fontconfig/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/fontconfig/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+
+$ pkg-config --list-all
+
+pkg-config freetype2 uuid --cflags
+

@@ -1,0 +1,38 @@
+
+
+http://www.linuxfromscratch.org/blfs/view/svn/general/fribidi.html
+
+./configure --prefix=/usr --disable-docs &&
+make
+
+https://github.com/Homebrew/homebrew-core/blob/master/Formula/fribidi.rb
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}",
+                          "--enable-static"
+    system "make", "install"
+
+
+
+wget -P /usr/local/Sources/ https://github.com/fribidi/fribidi/releases/download/v1.0.2/fribidi-1.0.2.tar.bz2
+tar zxvf /usr/local/Sources/fribidi-1.0.2.tar.bz2 -C /usr/local/Sources/
+cd /usr/local/Sources/fribidi-1.0.2
+
+
+./configure --prefix=/usr/local/Custom/fribidi --disable-debug --disable-docs --disable-dependency-tracking --disable-silent-rules \
+ --enable-static
+
+make
+sudo make install
+
+echo 'export PATH=/usr/local/Custom/fribidi/bin:$PATH' >> ~/.bash_profile
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/fribidi/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+
+$ pkg-config --list-all
+
+pkg-config fribidi --cflags
+

@@ -1,3 +1,284 @@
 https://docs.gitlab.com/ce/install/installation.html
 https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos
 https://www.howtoforge.com/tutorial/how-to-install-and-configure-gitlab-ce-on-centos-7/
+http://www.digitalvalley.com/blog/como-configurar-gitlab-como-tu-propio-clone-github-privado/
+https://jeremy.wordpress.com/2012/07/05/multiple-redis-instances-on-mac-os-x-with-homebrew/
+
+
+https://docs.gitlab.com/ee/install/installation.html#8-gitlab
+
+
+https://gitlab.com/gitlab-org/gitlab-ce/repository/master/archive.tar.gz
+
+wget -P /usr/local/Sources/ https://gitlab.com/gitlab-org/gitlab-ce/repository/10-5-stable/archive.tar.gz
+tar zxvf /usr/local/Sources/archive.tar.gz -C /usr/local/Sources/
+mv /usr/local/Sources/gitlab-ce-10-5-stable-b951e0d17739c669cafd6cd6e916f593b995aa62 /usr/local/Sources/gitlab-ce-10.5
+cd /usr/local/Sources/gitlab-ce-10.5
+
+cp config/gitlab.yml.example config/gitlab.yml
+
+
+
+# Update GitLab config file, follow the directions at top of file
+sudo -u git -H editor config/gitlab.yml
+
+# Copy the example secrets file
+sudo -u git -H cp config/secrets.yml.example config/secrets.yml
+sudo -u git -H chmod 0600 config/secrets.yml
+
+# Make sure GitLab can write to the log/ and tmp/ directories
+sudo chown -R $(whoami) log/
+sudo chown -R $(whoami) tmp/
+sudo chmod -R u+rwX,go-w log/
+sudo chmod -R u+rwX tmp/
+
+# Make sure GitLab can write to the tmp/pids/ and tmp/sockets/ directories
+sudo chmod -R u+rwX tmp/pids/
+sudo chmod -R u+rwX tmp/sockets/
+
+# Create the public/uploads/ directory
+sudo -u git -H mkdir public/uploads/
+
+# Make sure only the GitLab user has access to the public/uploads/ directory
+# now that files in public/uploads are served by gitlab-workhorse
+sudo chmod 0700 public/uploads
+
+# Change the permissions of the directory where CI job traces are stored
+sudo chmod -R u+rwX builds/
+
+# Change the permissions of the directory where CI artifacts are stored
+sudo chmod -R u+rwX shared/artifacts/
+
+# Change the permissions of the directory where GitLab Pages are stored
+sudo chmod -R ug+rwX shared/pages/
+
+# Copy the example Unicorn config
+sudo -u git -H cp config/unicorn.rb.example config/unicorn.rb
+
+# Find number of cores
+nproc  (sysctl -n hw.ncpu) (sysctl -n hw.logicalcpu_max)
+
+# Enable cluster mode if you expect to have a high load instance
+# Set the number of workers to at least the number of cores
+# Ex. change amount of workers to 3 for 2GB RAM server
+sudo -u git -H editor config/unicorn.rb
+
+# Copy the example Rack attack config
+sudo -u git -H cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
+
+# Configure Git global settings for git user
+# 'autocrlf' is needed for the web editor
+sudo -u git -H git config --global core.autocrlf input
+
+# Disable 'git gc --auto' because GitLab already runs 'git gc' when needed
+sudo -u git -H git config --global gc.auto 0
+
+# Enable packfile bitmaps
+sudo -u git -H git config --global repack.writeBitmaps true
+
+# Enable push options
+sudo -u git -H git config --global receive.advertisePushOptions true
+
+# Configure Redis connection settings
+sudo -u git -H cp config/resque.yml.example config/resque.yml
+
+# Change the Redis socket path if you are not using the default Debian / Ubuntu configuration
+sudo -u git -H editor config/resque.yml
+
+Changue In config/resque.yml 
+
+  url: unix:/var/run/redis/redis.sock to /usr/local/Custom/redis/tmp/redis.sock
+
+
+https://github.com/tootsuite/mastodon/issues/5507
+sudo gem install charlock_holmes  --  --with-icu-dir=/usr/local/Custom/icu
+sudo gem install bundler --no-ri --no-rdoc
+
+PostgreSQL: Follow Step 6 (Database)
+
+cp config/database.yml.postgresql config/database.yml
+
+editor config/database.yml
+chmod o-rwx config/database.yml
+
+sudo bundle config build.charlock_holmes --with-icu-dir=/usr/local/Custom/icu --with-opt-include=/usr/local/include/
+sudo bundle config build.re2 --with-re2-dir=/usr/local/Custom/re2
+
+Install Gems
+
+sudo bundle install --deployment --without development test mysql aws kerberos
+
+
+Redis: Follow Step 7 (Database)
+
+	$ mv /usr/local/Sources/redis-4.0.8/redis.conf /usr/local/Sources/redis-4.0.8/redis.old.conf
+	$ cat > /usr/local/Sources/redis-4.0.8/redis.conf <<EOL
+	pidfile /usr/local/Custom/redis/var/run/redis.pid
+	port 0
+	unixsocket /usr/local/Custom/redis/tmp/redis.sock
+	unixsocketperm 770
+	dbfilename dump.rdb
+	#vm-swap-file /usr/local/Custom/redis/tmp/redis.swap
+	# Data folder
+	dir /usr/local/Custom/redis/var
+	# Bind to localhost
+	bind 127.0.0.1
+	EOL
+	$ sudo mv /usr/local/Sources/redis-4.0.8/*.conf /usr/local/Custom/redis/
+
+
+sudo chown -Rv $(whoami):staff /usr/local/Custom/redis/tmp
+chmod 755 /usr/local/Custom/redis/tmp
+
+
+Install GitLab Shell 
+
+sudo bundle exec rake gitlab:shell:install REDIS_URL=unix:/usr/local/Custom/redis/tmp/redis.sock RAILS_ENV=production SKIP_STORAGE_VALIDATION=true
+
+rake aborted!
+LoadError: dlopen(/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: ../lib/libicudata.60.2.dylib
+  Referenced from: /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/charlock_holmes.bundle
+  Reason: image not found - /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/charlock_holmes.bundle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INI INSTALLING ICU
+
+wget -P /usr/local/Sources/ https://ssl.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz
+tar zxvf /usr/local/Sources/icu4c-60_2-src.tgz -C /usr/local/Sources/
+cd /usr/local/Sources/icu/source
+./configure --prefix=/usr/local/Custom/icu --disable-samples --disable-tests --enable-static --with-library-bits=64
+make
+sudo make install
+
+echo 'export PKG_CONFIG_PATH=/usr/local/Custom/icu/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bash_profile
+echo 'export PATH=/usr/local/Custom/icu/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+END INSTALLING ICU
+
+
+
+
+Set Changes libraries
+
+sudo bundle config build.charlock_holmes --with-icu-dir=/usr/local/Custom/icu --with-opt-include=/usr/local/include/
+sudo bundle config build.re2 --with-re2-dir=/usr/local/Custom/re2
+
+
+$ sudo gem uninstall charlock_holmes
+Successfully uninstalled charlock_holmes-0.7.5
+$
+
+Reinstall charlock_holmes
+$ sudo gem install charlock_holmes  --  --with-icu-dir=/usr/local/Custom/icu
+Fetching: charlock_holmes-0.7.5.gem (100%)
+Building native extensions with: '--with-icu-dir=/usr/local/Custom/icu'
+This could take a while...
+Successfully installed charlock_holmes-0.7.5
+Parsing documentation for charlock_holmes-0.7.5
+Installing ri documentation for charlock_holmes-0.7.5
+Done installing documentation for charlock_holmes after 0 seconds
+1 gem installed
+$ 
+
+
+$ sudo bundle exec rake gitlab:shell:install REDIS_URL=unix:/usr/local/Custom/redis/tmp/redis.sock RAILS_ENV=production SKIP_STORAGE_VALIDATION=true
+rake aborted!
+LoadError: dlopen(/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: ../lib/libicudata.60.2.dylib
+  Referenced from: /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/charlock_holmes.bundle
+  Reason: image not found - /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/charlock_holmes.bundle
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `block in require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:240:in `load_dependency'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes.rb:1:in `<top (required)>'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `block in require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:240:in `load_dependency'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/github-linguist-4.7.6/lib/linguist/blob_helper.rb:2:in `<top (required)>'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `block in require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:240:in `load_dependency'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/active_support/dependencies.rb:274:in `require'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/github-linguist-4.7.6/lib/linguist.rb:1:in `<top (required)>'
+/usr/local/Sources/gitlab-ce-10.5/config/application.rb:5:in `<top (required)>'
+/usr/local/Sources/gitlab-ce-10.5/Rakefile:5:in `require'
+/usr/local/Sources/gitlab-ce-10.5/Rakefile:5:in `<top (required)>'
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/rake-12.3.0/exe/rake:27:in `<top (required)>'
+/usr/local/Custom/ruby/bin/bundle:23:in `load'
+/usr/local/Custom/ruby/bin/bundle:23:in `<main>'
+(See full trace by running task with --trace)
+$ 
+
+
+Where is the Libraries?
+$ ls -al /usr/local/Custom/icu/lib/
+total 129760
+drwxr-xr-x  28 root  wheel       952 Feb 26 19:59 .
+drwxr-xr-x   7 root  wheel       238 Feb 26 19:58 ..
+drwxr-xr-x   6 root  wheel       204 Feb 26 19:59 icu
+-rwxr-xr-x   1 root  wheel  26902624 Feb 26 19:59 libicudata.60.2.dylib
+lrwxr-xr-x   1 root  wheel        21 Feb 26 19:59 libicudata.60.dylib -> libicudata.60.2.dylib
+-rwxr-xr-x   1 root  wheel  26900680 Feb 26 19:59 libicudata.a
+lrwxr-xr-x   1 root  wheel        21 Feb 26 19:59 libicudata.dylib -> libicudata.60.2.dylib
+-rwxr-xr-x   1 root  wheel   2864920 Feb 26 19:58 libicui18n.60.2.dylib
+lrwxr-xr-x   1 root  wheel        21 Feb 26 19:58 libicui18n.60.dylib -> libicui18n.60.2.dylib
+-rwxr-xr-x   1 root  wheel   4684852 Feb 26 19:58 libicui18n.a
+lrwxr-xr-x   1 root  wheel        21 Feb 26 19:58 libicui18n.dylib -> libicui18n.60.2.dylib
+-rwxr-xr-x   1 root  wheel     56816 Feb 26 19:58 libicuio.60.2.dylib
+lrwxr-xr-x   1 root  wheel        19 Feb 26 19:58 libicuio.60.dylib -> libicuio.60.2.dylib
+-rwxr-xr-x   1 root  wheel     72924 Feb 26 19:58 libicuio.a
+lrwxr-xr-x   1 root  wheel        19 Feb 26 19:58 libicuio.dylib -> libicuio.60.2.dylib
+-rwxr-xr-x   1 root  wheel     61796 Feb 26 19:58 libicutest.60.2.dylib
+lrwxr-xr-x   1 root  wheel        21 Feb 26 19:58 libicutest.60.dylib -> libicutest.60.2.dylib
+-rwxr-xr-x   1 root  wheel     79800 Feb 26 19:58 libicutest.a
+lrwxr-xr-x   1 root  wheel        21 Feb 26 19:58 libicutest.dylib -> libicutest.60.2.dylib
+-rwxr-xr-x   1 root  wheel    183192 Feb 26 19:58 libicutu.60.2.dylib
+lrwxr-xr-x   1 root  wheel        19 Feb 26 19:58 libicutu.60.dylib -> libicutu.60.2.dylib
+-rwxr-xr-x   1 root  wheel    245924 Feb 26 19:58 libicutu.a
+lrwxr-xr-x   1 root  wheel        19 Feb 26 19:58 libicutu.dylib -> libicutu.60.2.dylib
+-rwxr-xr-x   1 root  wheel   1724492 Feb 26 19:58 libicuuc.60.2.dylib
+lrwxr-xr-x   1 root  wheel        19 Feb 26 19:58 libicuuc.60.dylib -> libicuuc.60.2.dylib
+-rwxr-xr-x   1 root  wheel   2583096 Feb 26 19:58 libicuuc.a
+lrwxr-xr-x   1 root  wheel        19 Feb 26 19:58 libicuuc.dylib -> libicuuc.60.2.dylib
+drwxr-xr-x   5 root  wheel       170 Feb 26 19:59 pkgconfig
+$ 
+
+
+
+$ sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/libicudata.60.2.dylib
+$ sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/lib/libicudata.60.2.dylib
+sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/lib/libicudata.60.2.dylib
+
+
+
+$ sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/lib/libicudata.60.2.dylib
+$ sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/charlock_holmes/libicudata.60.2.dylib
+$ sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/lib/libicudata.60.2.dylib
+sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/charlock_holmes-0.7.5/libicudata.60.2.dylib
+
+
+sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/libicudata.60.2.dylib
+
+sudo ln -s /usr/local/Custom/icu/lib/libicudata.60.2.dylib /usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib/lib/libicudata.60.2.dylib
+
+/usr/local/Sources/gitlab-ce-10.5/vendor/bundle/ruby/2.4.0/gems/activesupport-4.2.10/lib
+
+
+
+
